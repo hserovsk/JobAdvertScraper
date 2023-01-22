@@ -3,6 +3,8 @@ import requests
 from openpyxl import Workbook, load_workbook
 from datetime import date
 from configparser import ConfigParser
+import logging
+
 
 # Config
 config = ConfigParser()
@@ -17,12 +19,23 @@ ws.title = 'Jobs from Pracuj.pl'
 today = date.today()
 date_text_month = today.strftime("%d %B %Y")
 
+# Logger
+logger = logging.getLogger("JobAdvertScraper")
+logging.basicConfig(level=logging.INFO)
+log_filename = 'logfile_{}.log'.format(date_text_month)
+
+
+file_handler = logging.FileHandler(log_filename)
+formatter = logging.Formatter("%(asctime)s: %(levelname)s - %(message)s")
+file_handler.setFormatter(formatter)
+file_handler.setLevel(logging.INFO)
+logger.addHandler(file_handler)
 
 
 #jobs = soup.find_all('div', class_='ceqyuft')
 
 print("###################### SCRAPER STARTING EXECUTION ######################")
-
+logger.info("###################### SCRAPER STARTING EXECUTION ######################")
 # Scraper
 
 try:
@@ -48,4 +61,7 @@ try:
     wb.save('jobs {}.xlsx'.format(date_text_month))
     #for job in jobs:
 except:
-    pass
+    logger.critical("CRITICAL ERROR OCCURED")
+
+print("###################### SCRAPER EXECUTION ENDED ######################")
+logger.info("###################### SCRAPER EXECUTION ENDED ######################")
