@@ -12,6 +12,8 @@ today = date.today()
 date_text_month = today.strftime("%d %B %Y")
 
 #jobs = soup.find_all('div', class_='ceqyuft')
+
+print('test')
 jobs = soup.find_all('div', class_='c1dwhfs6')
 ws.append(['Job title', 'Seniority', 'Company name'])
 for job in jobs:
